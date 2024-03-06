@@ -60,7 +60,7 @@ namespace AMLBarcodeScannerLib
                          {
                             case Values.ACTION_SCANNED:
                                 var barcode = intent.GetStringExtra(Values.EXTRA_DATA);
-                                var rawBarcode = intent.GetStringExtra(Values.EXTRA_DATA);
+                                var rawBarcode = intent.GetStringExtra(Values.EXTRA_RAW_DATA);
                                 Scanned?.Invoke(barcode, rawBarcode);
                                 break;
                             case Values.ACTION_TRIGGER_PULLED:
