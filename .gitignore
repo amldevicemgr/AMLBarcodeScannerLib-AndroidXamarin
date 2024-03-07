@@ -332,6 +332,11 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 
+# Nugets
+*.nupkg
+*.nuspec
+nuget.exe
+
 # OpenCover UI analysis results
 OpenCover/
 
