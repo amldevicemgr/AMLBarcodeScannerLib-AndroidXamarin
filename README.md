@@ -19,10 +19,12 @@ The parameter for the constructor is the `Context` of the Android application.
 
 ## Example
 
+Opening the scanner and registering for scan data.
+
 ```csharp
 var scanner;
 
-public initScanner()
+public void initScanner()
 {
     scanner = new AMLBarcodeScanner(this);
 
@@ -34,5 +36,89 @@ public initScanner()
 public void ReceiveScan(string barcode, string rawBarcode)
 {
     //Process barcode data
+}
+```
+
+Querying and updating scanner settings.
+
+```csharp
+public void QueryScannerSettings()
+{
+    scanner.GetScannerSettings(ScannerSettingsReceived);
+}
+
+public void ScannerSettingsReceived(ScannerSettings settings)
+{
+    var currentSuffix = settings.GetSuffix();
+    if (currentSuffix == null || currentSuffix != "!")
+    {
+        settings.SetSuffix("!");
+        scanner.ChangeSettings(settings);
+    }
+}
+
+```
+
+Registering for trigger events.
+
+```csharp
+public void RegisterTriggerEvents()
+{
+    scanner.TriggerPulled += TriggerWasPulled;   
+    scanner.TriggerReleased += TriggerWasReleased; 
+}
+
+public void TriggerWasPulled()
+{
+    //Handle trigger pull
+}
+
+public void TriggerWasReleased()
+{
+    //Handle trigger release
+}
+```
+
+Querying BT Scanner and registering for events.
+
+```csharp
+BTDeviceInfo storedBTScanner;
+
+public void GetCurrentBTDevice()
+{
+    if (AMLDevice.IsBTScannerSupported())
+        scanner.GetBTScannerInfo(ReceivedBTScannerInfo);
+}
+
+public void ReceivedBTScannerInfo(BTDeviceInfo btDevice)
+{
+    var name = btDevice.GetBTName();
+    if (!String.IsNullOrEmpty(name))
+    {
+        storedBTScanner = btDevice;
+        RegisterBTScannerEvents();
+    }
+}
+
+public void RegisterBTScannerEvents()
+{
+    scanner.BTScannerConnected += BTScannerConnect;   
+    scanner.BTScannerDisconnected += BTScannerDisconnect; 
+    scanner.BTScannerLowBattery += BTLowBattery;
+}
+
+public void BTScannerConnect(BTScanDevice btDevice)
+{
+    //Add functionality
+}
+
+public void BTScannerDisconnect(BTScanDevice btDevice)
+{
+    //Add functionality
+}
+
+public void BTLowBattery(int batteryLevel)
+{
+    //Add functionality
 }
 ```

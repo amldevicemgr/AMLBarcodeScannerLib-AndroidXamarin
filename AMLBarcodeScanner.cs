@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Android.App;
+using AMLBarcodeScannerLib.BTScanner;
 
 namespace AMLBarcodeScannerLib
 {
@@ -19,6 +20,9 @@ namespace AMLBarcodeScannerLib
         public event Action<string, string> Scanned;
         public event Action TriggerPulled;
         public event Action TriggerReleased;
+        public event Action<BTScanDevice> BTScannerConnected;
+        public event Action<BTScanDevice> BTScannerDisconnected;
+        public event Action<int> BTScannerLowBattery;
 
         /// <summary>
         /// Constructs an AMLBarcodeScanner instance to configure the barcode scanner and receive barcode data.
@@ -51,6 +55,10 @@ namespace AMLBarcodeScannerLib
                 filter.AddAction(Values.ACTION_TRIGGER_RELEASED);
                 //Add this if we want an intent with error messages returned to us.
                 filter.AddAction(Values.ACTION_ERROR);
+                //Add this if we want to listen for BT Scanner events
+                filter.AddAction(Values.ACTION_RING_SCANNER_CONNECTED);
+                filter.AddAction(Values.ACTION_RING_SCANNER_DISCONNECTED);
+                filter.AddAction(Values.ACTION_RING_SCANNER_LOW_BATTERY);
 
                 //This broadcast receiver will handle incoming intents from the scanner service.
                 mReceiver = new BroadcastReceiverHelp(intent => {
@@ -73,7 +81,23 @@ namespace AMLBarcodeScannerLib
                                 var errMsg = intent.GetStringExtra(Values.EXTRA_DATA);
                                 Error?.Invoke(errMsg);
                                 break;
-                         }
+                            case Values.ACTION_RING_SCANNER_CONNECTED:
+                            case Values.ACTION_RING_SCANNER_DISCONNECTED:
+                                var btscannerstring = intent.GetStringExtra(Values.EXTRA_RING_SCANNER);
+                                if (!System.String.IsNullOrEmpty(btscannerstring))
+                                {
+                                    var btscanner = Newtonsoft.Json.JsonConvert.DeserializeObject<BTScanDevice>(btscannerstring);
+                                    if (intent.Action == Values.ACTION_RING_SCANNER_CONNECTED)
+                                        BTScannerConnected?.Invoke(btscanner);
+                                    else
+                                        BTScannerDisconnected?.Invoke(btscanner);
+                                }
+                                break;
+                            case Values.ACTION_RING_SCANNER_LOW_BATTERY:
+                                var battery = intent.GetIntExtra(Values.EXTRA_RING_SCANNER_LOW_BATTERY, -1);
+                                BTScannerLowBattery?.Invoke(battery);
+                                break;
+                        }
                     }
                 });
 
@@ -401,6 +425,23 @@ namespace AMLBarcodeScannerLib
                 var bundle = new Bundle();
                 bundle.PutParcelable(Intent.ExtraResultReceiver, ResultReceiverHelp.CreateNewFromParcel(result));
                 Intent intent = new Intent();
+                intent.PutExtras(bundle);
+                StartService(intent);
+            }
+        }
+
+        /// <summary>
+        /// Requests the current bt scanner info asynchronously.
+        /// </summary>
+        /// <param name="result">The Action receiver to receive the bt scanner result.</param>
+        public void GetBTScannerInfo(Action<BTDeviceInfo> result)
+        {
+            if (result != null)
+            {
+                var bundle = new Bundle();
+                bundle.PutParcelable(Intent.ExtraResultReceiver, ResultReceiverHelp.CreateNewFromParcel(result));
+                Intent intent = new Intent();
+                intent.SetAction(Values.GET_BT_DEVICE_INFO_ACTION);
                 intent.PutExtras(bundle);
                 StartService(intent);
             }
