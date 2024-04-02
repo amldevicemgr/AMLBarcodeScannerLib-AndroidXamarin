@@ -31,7 +31,21 @@ namespace AMLBarcodeScannerLib.BTScanner
 
         public string? GetBattery()
         {
-            return Battery;
+            if (Battery != null && !Battery.Equals(""))
+            {
+                string percent = Battery;
+                int index = percent.LastIndexOf("/");
+                int percentIndex = percent.LastIndexOf("]");
+                if (index != -1 && percentIndex != -1)
+                {
+                    percent = percent.Substring(index + 1, percentIndex);
+                    return percent;
+                }
+                else
+                    return Battery;
+            }
+            else
+                return Battery;
         }
 
         public string? GetServiceUuid()
