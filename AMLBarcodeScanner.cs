@@ -443,7 +443,8 @@ namespace AMLBarcodeScannerLib
                 Intent intent = new Intent();
                 intent.SetAction(Values.GET_BT_DEVICE_INFO_ACTION);
                 intent.PutExtras(bundle);
-                StartService(intent);
+                intent.SetPackage(Values.PACKAGE_NAME);
+                mContext.SendBroadcast(intent);
             }
         }
 
