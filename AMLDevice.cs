@@ -16,42 +16,14 @@ namespace AMLBarcodeScannerLib
     public class AMLDevice
     {
         /// <summary>
-        /// Gets the AML device model.
-        /// Returns the model string or null if the device is not an AML device.
-        /// </summary>
-        public static string GetAMLModel()
-        {
-            string model = Build.Model;
-            string amlModel = null;
-            switch (model)
-            {
-                case "M7700":
-                    amlModel = "M7700";
-                    break;
-                case "M7800":
-                    amlModel = "M7800";
-                    break;
-                case "M6500":
-                    amlModel = "M6500";
-                    break;
-                case "KDT7":
-                    amlModel = "KDT7";
-                    break;
-                case "M7800 BATCH":
-                    amlModel = "M7800 BATCH";
-                    break;                    
-            }
-            return amlModel;
-        }
-
-        /// <summary>
         /// Checks whether the device is an AML device.
         /// Returns true if the device is AML, otherwise false.
         /// </summary>
         public static bool IsAMLDevice()
         {
-            string model = Build.Model;
-            return model.Equals("M7700") || model.Equals("M7800") || model.Equals("M6500") || model.Equals("KDT7") || model.Equals("M7800 BATCH");
+            string manufacturer = Build.Manufacturer;
+
+            return manufacturer.Equals("AML") || manufacturer.Equals("American Microsystems LTD.");
         }
 
         /// <summary>
