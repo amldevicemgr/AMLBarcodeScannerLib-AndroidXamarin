@@ -110,5 +110,12 @@ namespace AMLBarcodeScannerLib
         //Used for hiding keyboard on scan
         public const string PROPERTY_NAME_FLAGS = "Flags";
         public const int FLAG_HIDE_IME_ON_SCAN = 1;
+
+        //Key name for enabling/disabling sending of the configured scan intents.
+        // Requires a Boolean value type.
+        public const string PROPERTY_NAME_SCAN_INTENTS_ENABLED = "ScanIntentsEnabled";
+        //Key name for the list of scan intents to send on each scan.
+        // Requires String value type. The string is a JSON array of scan intent objects.
+        public const string PROPERTY_NAME_SCAN_INTENTS = "ScanIntents";
     }
 }

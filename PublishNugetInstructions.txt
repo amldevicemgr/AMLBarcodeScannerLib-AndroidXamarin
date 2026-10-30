@@ -1,0 +1,8 @@
+1. Make changes to code. 
+2. Clean and build project. 
+3. In VS go to Git Changes and click Stage All. 
+4. In Git Changes click Push icon to push to GitHub. 
+5. Update .nuspec file with new version and release notes. 
+6. Open command prompt in project directory and run 'nuget pack YourPackage.nuspec'. The nuget.exe must also be in this directory. 
+7. Grab the output .nupkg file and upload to nuget.org. Will need to copy the old readme.md and paste in the nuget.org upload with any changes made. 
+8. Check in changes to SVN. 

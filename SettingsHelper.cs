@@ -56,6 +56,12 @@ namespace AMLBarcodeScannerLib
                     scannerSettings.SetAimIdEnabled(ParseAimIdEnabled((long)scannerBundle.BarcodeFormatFlags));
                 if (scannerBundle.OpFlags != null)
                     scannerSettings.SetPicklistModeEnabled(ParsePicklistModeEnabled((long)scannerBundle.OpFlags));
+                // Older scanner service versions don't report scan intents.
+                if (scannerBundle.ScanIntentsEnabled != null)
+                    scannerSettings.SetScanIntentsEnabled((bool)scannerBundle.ScanIntentsEnabled);
+                string? scanIntents = scannerBundle.ScanIntents;
+                if (scanIntents != null)
+                    scannerSettings.SetScanIntents(ScanIntentHelper.FromJsonString(scanIntents));
                 return scannerSettings;
             }
         }
@@ -213,6 +219,10 @@ namespace AMLBarcodeScannerLib
                 scannerBundle.BarcodeFormatFlags = ParseAimIdEnabled(settings.IsAimIdEnabled());
             if (settings.IsPicklistModeEnabled() != null)
                 scannerBundle.OpFlags = ParsePicklistModeEnabled(settings.IsPicklistModeEnabled());
+            if (settings.IsScanIntentsEnabled() != null)
+                scannerBundle.ScanIntentsEnabled = settings.IsScanIntentsEnabled();
+            if (settings.GetScanIntents() != null)
+                scannerBundle.ScanIntents = ScanIntentHelper.ToJsonString(settings.GetScanIntents());
             return scannerBundle.GetBundle();
         }
     }

@@ -122,3 +122,25 @@ public void BTLowBattery(int batteryLevel)
     //Add functionality
 }
 ```
+
+Configuring scan intents. On each scan, the scanner service sends every configured scan intent with the barcode data
+(this is the same as the Scan Intents screen in the AML Barcode Scanner app settings).
+
+```csharp
+public void ConfigureScanIntents()
+{
+    var intent = new ScanIntent("com.example.myapp.SCAN", ScanIntentSendType.SENDBROADCAST);
+    intent.SetExtraName("barcode");             //Extra that holds the barcode data. Empty uses "d".
+    intent.SetCategory("");                     //Optional
+    intent.AddPackage("com.example.myapp");     //Optional, target specific package(s)
+    intent.AddExtra("source", "aml");           //Optional, additional string extras
+
+    //Replaces the full list of scan intents. Pass an empty list to remove all.
+    scanner.SetScanIntents(new List<ScanIntent> { intent });
+    scanner.EnableScanIntents();
+}
+```
+
+Scan intents are also available on `ScannerSettings` via `GetScanIntents()` / `SetScanIntents()` and
+`IsScanIntentsEnabled()` / `SetScanIntentsEnabled()`, so you can read the current list, modify it, and send it back
+with `ChangeSettings()`.

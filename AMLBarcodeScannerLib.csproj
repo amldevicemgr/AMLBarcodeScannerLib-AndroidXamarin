@@ -55,11 +55,15 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScanIntentHelper.cs" />
     <Compile Include="ScannerBundle.cs" />
     <Compile Include="ScannerProperties.cs" />
     <Compile Include="SettingsHelper.cs" />
     <Compile Include="Settings\KeyboardWedgeMode.cs" />
     <Compile Include="Settings\PresentationMode.cs" />
+    <Compile Include="Settings\ScanIntent.cs" />
+    <Compile Include="Settings\ScanIntentExtra.cs" />
+    <Compile Include="Settings\ScanIntentSendType.cs" />
     <Compile Include="Settings\ScannerSettings.cs" />
     <Compile Include="Values.cs" />
   </ItemGroup>

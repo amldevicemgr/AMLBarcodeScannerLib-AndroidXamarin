@@ -101,6 +101,16 @@ namespace AMLBarcodeScannerLib
             get => GetLong(ScannerProperties.PROPERTY_NAME_FLAGS);
             set => Set(ScannerProperties.PROPERTY_NAME_FLAGS, value);
         }
+        public bool? ScanIntentsEnabled
+        {
+            get => GetBool(ScannerProperties.PROPERTY_NAME_SCAN_INTENTS_ENABLED);
+            set => Set(ScannerProperties.PROPERTY_NAME_SCAN_INTENTS_ENABLED, value);
+        }
+        public string? ScanIntents
+        {
+            get => GetString(ScannerProperties.PROPERTY_NAME_SCAN_INTENTS);
+            set => Set(ScannerProperties.PROPERTY_NAME_SCAN_INTENTS, value);
+        }
 
         public string GetString(string name) { return Bundle.GetString(name); }
         public bool? GetBool(string name) { return (bool?)Bundle.Get(name); }

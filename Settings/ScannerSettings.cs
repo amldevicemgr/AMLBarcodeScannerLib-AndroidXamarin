@@ -23,6 +23,8 @@ namespace AMLBarcodeScannerLib.Settings
         private bool? KeyboardWedge;
         private bool? AimId;
         private bool? PicklistMode;
+        private bool? ScanIntentsEnabled;
+        private List<ScanIntent>? ScanIntents;
 
         public string? GetPrefix()
         {
@@ -178,6 +180,33 @@ namespace AMLBarcodeScannerLib.Settings
         public void SetPicklistModeEnabled(bool picklistMode)
         {
             PicklistMode = picklistMode;
+        }
+
+        public bool? IsScanIntentsEnabled()
+        {
+            return ScanIntentsEnabled;
+        }
+
+        public void SetScanIntentsEnabled(bool scanIntentsEnabled)
+        {
+            ScanIntentsEnabled = scanIntentsEnabled;
+        }
+
+        /// <summary>
+        /// The configured scan intents, or null if not set.
+        /// </summary>
+        public List<ScanIntent>? GetScanIntents()
+        {
+            return ScanIntents;
+        }
+
+        /// <summary>
+        /// Replaces the full list of scan intents. Pass an empty list to remove all scan intents.
+        /// </summary>
+        /// <param name="scanIntents">The scan intents the scanner service sends on each scan.</param>
+        public void SetScanIntents(List<ScanIntent> scanIntents)
+        {
+            ScanIntents = scanIntents;
         }
 
     }

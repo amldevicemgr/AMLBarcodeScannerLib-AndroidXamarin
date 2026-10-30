@@ -415,6 +415,38 @@ namespace AMLBarcodeScannerLib
         }
 
         /// <summary>
+        /// Enables sending of the configured scan intents on each scan.
+        /// </summary>
+        public void EnableScanIntents()
+        {
+            ScannerBundle scannerSettings = new ScannerBundle();
+            scannerSettings.ScanIntentsEnabled = true;
+            ChangeSettings(scannerSettings.GetBundle());
+        }
+
+        /// <summary>
+        /// Disables sending of the configured scan intents.
+        /// </summary>
+        public void DisableScanIntents()
+        {
+            ScannerBundle scannerSettings = new ScannerBundle();
+            scannerSettings.ScanIntentsEnabled = false;
+            ChangeSettings(scannerSettings.GetBundle());
+        }
+
+        /// <summary>
+        /// Replaces the full list of scan intents the scanner service sends on each scan.
+        /// Scan intents are only sent while scan intents are enabled (see EnableScanIntents).
+        /// </summary>
+        /// <param name="scanIntents">The scan intents to set. Null or empty removes all scan intents.</param>
+        public void SetScanIntents(List<ScanIntent> scanIntents)
+        {
+            ScannerBundle scannerSettings = new ScannerBundle();
+            scannerSettings.ScanIntents = ScanIntentHelper.ToJsonString(scanIntents);
+            ChangeSettings(scannerSettings.GetBundle());
+        }
+
+        /// <summary>
         /// Requests the current scanner settings asynchronously.
         /// </summary>
         /// <param name="result">The Action receiver to receive the settings result.</param>
